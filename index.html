@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feliz cumpleaños, Marco</title>
+<meta name="description" content="Una presentación hecha para tu cumpleaños.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Karla:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noche:#14123A;
+  --noche-honda:#0B0A20;
+  --oro:#F5B841;
+  --coral:#FF6F61;
+  --menta:#78D5C0;
+  --papel:#FFF6E9;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --texto:"Karla",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--noche-honda);
+  color:var(--papel);
+  font-family:var(--texto);
+  font-size:17px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+body.bloqueado{overflow:hidden;height:100vh}
+
+/* ---------- Portada: la vela ---------- */
+#portada{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(ellipse 60% 50% at 50% 42%, #2A2456 0%, var(--noche-honda) 70%);
+  text-align:center;
+  padding:2rem;
+  transition:opacity .9s ease, visibility .9s;
+}
+#portada.apagada{opacity:0;visibility:hidden;pointer-events:none}
+
+.vela{position:relative;width:44px;margin:0 auto 2.5rem;cursor:pointer;border:0;background:none;padding:1rem}
+.vela:focus-visible{outline:2px solid var(--oro);outline-offset:6px;border-radius:8px}
+.cera{
+  width:22px;height:110px;margin:0 auto;
+  background:linear-gradient(100deg,var(--coral) 0%,#ff8f84 45%,#e2564a 100%);
+  border-radius:4px 4px 2px 2px;
+}
+.flama{
+  position:absolute;top:-24px;left:50%;
+  width:16px;height:30px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at 50% 75%, #fff6d0 0%, var(--oro) 40%, #ff8a3d 75%, transparent 100%);
+  border-radius:50% 50% 45% 45%;
+  filter:blur(.4px);
+  animation:titilar 1.6s ease-in-out infinite;
+  transform-origin:50% 100%;
+}
+.halo{
+  position:absolute;top:-70px;left:50%;
+  width:180px;height:180px;
+  transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(245,184,65,.28) 0%,transparent 65%);
+  pointer-events:none;
+  animation:respirar 3.4s ease-in-out infinite;
+}
+@keyframes titilar{
+  0%,100%{transform:translateX(-50%) scaleY(1) rotate(-1deg)}
+  50%{transform:translateX(-50%) scaleY(1.14) rotate(2deg)}
+}
+@keyframes respirar{0%,100%{opacity:.75}50%{opacity:1}}
+.vela.soplada .flama{animation:none;opacity:0;transition:opacity .25s}
+.vela.soplada .halo{opacity:0;transition:opacity .7s}
+
+#portada h1{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(2.4rem,11vw,4.2rem);
+  line-height:.95;
+  letter-spacing:-.03em;
+}
+#portada h1 em{font-style:normal;color:var(--oro);display:block}
+.instruccion{
+  margin-top:1.5rem;font-size:.95rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(255,246,233,.55);
+}
+
+/* ---------- Historia ---------- */
+main{max-width:640px;margin:0 auto;padding:14vh 1.5rem 8rem}
+
+.momento{margin-bottom:14vh}
+.marco{
+  background:var(--papel);
+  padding:14px 14px 58px;
+  border-radius:3px;
+  box-shadow:0 22px 50px -18px rgba(0,0,0,.75);
+  transform:rotate(var(--giro,-1.5deg));
+  transition:transform .5s ease;
+}
+.momento:nth-child(even) .marco{--giro:1.8deg}
+.marco:hover{transform:rotate(0deg) scale(1.015)}
+.marco img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;background:#DED3C3}
+.pie{
+  font-family:var(--display);
+  color:var(--noche);
+  font-size:1.15rem;
+  text-align:center;
+  padding-top:14px;
+  line-height:1.3;
+}
+.nota{
+  margin-top:1.6rem;
+  font-size:1.12rem;
+  color:rgba(255,246,233,.9);
+  padding-left:1.1rem;
+  border-left:2px solid var(--menta);
+}
+
+/* Placeholder cuando aún no hay foto real */
+.marco img.falta{
+  background:repeating-linear-gradient(45deg,#E8DCC9,#E8DCC9 12px,#DED3C3 12px,#DED3C3 24px);
+}
+
+/* ---------- Cierre ---------- */
+.cierre{text-align:center;padding-top:6vh}
+.cierre h2{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(2rem,9vw,3.2rem);
+  line-height:1.02;
+  letter-spacing:-.02em;
+}
+.cierre h2 span{color:var(--oro)}
+.cierre p{margin-top:1.5rem;color:rgba(255,246,233,.75)}
+.firma{
+  margin-top:2.5rem;font-size:.85rem;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(255,246,233,.4);
+}
+
+/* Aparición al hacer scroll */
+.revelar{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.3,1)}
+.revelar.visible{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01ms!important}
+  .revelar{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body class="bloqueado">
+
+<div id="portada">
+  <div>
+    <button class="vela" id="vela" aria-label="Soplar la vela para empezar">
+      <span class="halo"></span>
+      <span class="flama"></span>
+      <span class="cera"></span>
+    </button>
+    <h1>Hoy cumples<em>años, Marco</em></h1>
+    <p class="instruccion">Toca la vela</p>
+  </div>
+</div>
+
+<main id="historia">
+
+  <section class="momento revelar">
+    <figure class="marco">
+      <img src="fotos/01.jpg" alt="Marco de niño" onerror="this.classList.add('falta')">
+      <figcaption class="pie">Donde empezó todo</figcaption>
+    </figure>
+    <p class="nota">Ya desde entonces tenías esa risa que no se le puede pedir a nadie que ponga.</p>
+  </section>
+
+  <section class="momento revelar">
+    <figure class="marco">
+      <img src="fotos/02.jpg" alt="Marco con sus amigos" onerror="this.classList.add('falta')">
+      <figcaption class="pie">Los de siempre</figcaption>
+    </figure>
+  </section>
+
+  <section class="momento revelar">
+    <figure class="marco">
+      <img src="fotos/03.jpg" alt="Marco de viaje" onerror="this.classList.add('falta')">
+      <figcaption class="pie">Aquel viaje que no se planeó</figcaption>
+    </figure>
+    <p class="nota">Nadie sabía a dónde íbamos y salió el mejor fin de semana del año.</p>
+  </section>
+
+  <section class="momento revelar">
+    <figure class="marco">
+      <img src="fotos/04.jpg" alt="Marco este año" onerror="this.classList.add('falta')">
+      <figcaption class="pie">Y así te vemos hoy</figcaption>
+    </figure>
+  </section>
+
+  <section class="cierre revelar">
+    <h2>Gracias por <span>todo esto</span></h2>
+    <p>Que este año te traiga más de lo que te gusta y menos de lo que no.</p>
+    <p class="firma">Con cariño, de todos</p>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  var portada = document.getElementById('portada');
+  var vela = document.getElementById('vela');
+
+  function empezar(){
+    vela.classList.add('soplada');
+    setTimeout(function(){
+      portada.classList.add('apagada');
+      document.body.classList.remove('bloqueado');
+      document.getElementById('historia').focus({preventScroll:true});
+    }, 550);
+  }
+  vela.addEventListener('click', empezar);
+
+  // Revelar cada momento al entrar en pantalla
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.revelar').forEach(function(el){ obs.observe(el); });
+  } else {
+    document.querySelectorAll('.revelar').forEach(function(el){ el.classList.add('visible'); });
+  }
+})();
+</script>
+</body>
+</html>
