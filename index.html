@@ -17,6 +17,7 @@
   --coral:#FF6F61;
   --menta:#78D5C0;
   --papel:#FFF6E9;
+  --reverso:#F3E7D3;
   --display:"Bricolage Grotesque",system-ui,sans-serif;
   --texto:"Karla",system-ui,sans-serif;
 }
@@ -105,7 +106,7 @@ body.bloqueado{overflow:hidden;height:100vh}
   100%{opacity:0;transform:translateY(105vh) rotate(760deg)}
 }
 
-/* ============ CONTROL DE MÚSICA ============ */
+/* ============ MÚSICA ============ */
 #sonido{
   position:fixed;top:1rem;right:1rem;z-index:120;
   width:44px;height:44px;border-radius:50%;
@@ -120,14 +121,14 @@ body.bloqueado{overflow:hidden;height:100vh}
 /* ============ HISTORIA ============ */
 main{max-width:660px;margin:0 auto;padding:16vh 1.5rem 8rem}
 
-.intro{text-align:center;margin-bottom:18vh}
+.intro{text-align:center;margin-bottom:16vh}
 .intro p{font-size:1.3rem;color:rgba(255,246,233,.85);line-height:1.5}
 .intro .baja{
   margin-top:3rem;font-size:.78rem;letter-spacing:.18em;
   text-transform:uppercase;color:rgba(255,246,233,.4);
 }
 
-.momento{margin-bottom:15vh;position:relative}
+.momento{margin-bottom:13vh;position:relative}
 .anio{
   font-family:var(--display);font-weight:800;
   font-size:clamp(3.4rem,16vw,6rem);
@@ -136,26 +137,87 @@ main{max-width:660px;margin:0 auto;padding:16vh 1.5rem 8rem}
   margin-bottom:-.32em;position:relative;z-index:2;
   padding-left:.06em;
 }
-.marco{
-  background:var(--papel);padding:14px 14px 60px;border-radius:3px;
-  box-shadow:0 24px 55px -18px rgba(0,0,0,.8);
-  transform:rotate(var(--giro,-1.6deg));
-  transition:transform .5s cubic-bezier(.2,.7,.3,1);
-  position:relative;z-index:1;
+
+/* ---- TARJETA QUE SE VOLTEA ---- */
+.tarjeta{
+  position:relative;
+  width:100%;
+  aspect-ratio:4/5;
+  border:0;padding:0;background:none;
+  cursor:pointer;
+  perspective:1400px;
+  display:block;
+  z-index:1;
 }
-.momento:nth-child(even) .marco{--giro:1.9deg}
-.marco:hover{transform:rotate(0deg) scale(1.015)}
-.marco img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;background:#DED3C3}
-.marco img.falta{background:repeating-linear-gradient(45deg,#E8DCC9,#E8DCC9 12px,#DED3C3 12px,#DED3C3 24px)}
+.tarjeta:focus-visible{outline:2px solid var(--oro);outline-offset:10px;border-radius:6px}
+
+.giro{
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;
+  transform:rotateY(0deg) rotate(var(--giro,-1.6deg));
+  transition:transform .85s cubic-bezier(.3,.8,.3,1);
+}
+.momento:nth-of-type(even) .giro{--giro:1.9deg}
+.tarjeta.volteada .giro{transform:rotateY(180deg) rotate(var(--giro,-1.6deg))}
+
+.cara{
+  position:absolute;inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border-radius:3px;
+  box-shadow:0 24px 55px -18px rgba(0,0,0,.8);
+  overflow:hidden;
+}
+
+/* Frente: la foto */
+.frente{
+  background:var(--papel);
+  padding:14px 14px 0;
+  display:flex;flex-direction:column;
+}
+.frente img{
+  width:100%;flex:1;min-height:0;
+  display:block;object-fit:cover;background:#DED3C3;
+}
+.frente img.falta{background:repeating-linear-gradient(45deg,#E8DCC9,#E8DCC9 12px,#DED3C3 12px,#DED3C3 24px)}
 .pie{
   font-family:var(--display);color:var(--noche);
-  font-size:1.18rem;text-align:center;padding-top:15px;line-height:1.3;
+  font-size:1.15rem;text-align:center;
+  padding:14px 6px;line-height:1.25;
+  flex:0 0 auto;
 }
-.nota{
-  margin-top:1.8rem;font-size:1.1rem;
-  color:rgba(255,246,233,.88);
-  padding-left:1.2rem;border-left:2px solid var(--menta);
+
+/* Reverso: el mensaje */
+.reverso{
+  transform:rotateY(180deg);
+  background:var(--reverso);
+  color:var(--noche);
+  padding:2.2rem 2rem;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  background-image:repeating-linear-gradient(
+    transparent, transparent 31px, rgba(20,18,58,.07) 32px);
 }
+.reverso p{
+  font-size:clamp(1rem,4.2vw,1.22rem);
+  line-height:1.55;
+  color:rgba(20,18,58,.88);
+}
+.reverso .de{
+  margin-top:1.4rem;
+  font-family:var(--display);font-weight:700;
+  font-size:.95rem;color:var(--coral);
+}
+
+/* Aviso de "toca la foto" */
+.pista{
+  margin-top:1rem;text-align:center;
+  font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,246,233,.38);
+  transition:opacity .5s;
+}
+.tarjeta.volteada + .pista{opacity:0}
 
 /* ============ CIERRE ============ */
 .cierre{text-align:center;padding-top:8vh}
@@ -184,9 +246,15 @@ main{max-width:660px;margin:0 auto;padding:16vh 1.5rem 8rem}
 .revelar.visible{opacity:1;transform:none}
 
 @media (prefers-reduced-motion:reduce){
-  *{animation:none!important;transition-duration:.01ms!important}
-  .revelar{opacity:1;transform:none}
+  .flama,.halo,.humo,.papelito,.instruccion{animation:none!important}
+  .revelar{opacity:1;transform:none;transition:none}
   html{scroll-behavior:auto}
+  /* Sin giro 3D: el reverso simplemente aparece */
+  .giro{transition:none;transform:rotate(var(--giro,-1.6deg))}
+  .tarjeta.volteada .giro{transform:rotate(var(--giro,-1.6deg))}
+  .reverso{transform:none;opacity:0;transition:opacity .2s}
+  .tarjeta.volteada .reverso{opacity:1}
+  .tarjeta.volteada .frente{opacity:0}
 }
 </style>
 </head>
@@ -213,52 +281,179 @@ main{max-width:660px;margin:0 auto;padding:16vh 1.5rem 8rem}
 <main id="historia">
 
   <section class="intro revelar">
-    <p>Juntamos algunas fotos<br>y las cosas que queríamos decirte.</p>
+    <p>Juntamos algunas fotos<br>y detrás de cada una te dejamos algo.</p>
     <p class="baja">Desliza hacia abajo</p>
   </section>
 
+  <!-- ===== 1 ===== -->
   <section class="momento revelar">
     <p class="anio">1998</p>
-    <figure class="marco">
-      <img src="fotos/01.jpg" alt="Marco de niño" onerror="this.classList.add('falta')">
-      <figcaption class="pie">Donde empezó todo</figcaption>
-    </figure>
-    <p class="nota">Ya desde entonces sabíamos lo mucho que te amábamos.</p>
+    <button class="tarjeta" aria-label="Voltear la foto para leer el mensaje">
+      <div class="giro">
+        <div class="cara frente">
+          <img src="fotos/01.webp" alt="Marco de niño" onerror="this.classList.add('falta')">
+          <p class="pie">Donde empezó todo</p>
+        </div>
+        <div class="cara reverso">
+          <p>Ya desde entonces tenías esa risa que no se le puede pedir a nadie que ponga.</p>
+          <p class="de">— Mamá</p>
+        </div>
+      </div>
+    </button>
+    <p class="pista">Toca la foto</p>
   </section>
 
+  <!-- ===== 2 ===== -->
+  <section class="momento revelar">
+    <p class="anio">2005</p>
+    <button class="tarjeta" aria-label="Voltear la foto para leer el mensaje">
+      <div class="giro">
+        <div class="cara frente">
+          <img src="fotos/02.webp" alt="Marco en la primaria" onerror="this.classList.add('falta')">
+          <p class="pie">El primer día de clases</p>
+        </div>
+        <div class="cara reverso">
+          <p>Llorabas por no querer entrar y saliste diciendo que era el mejor día de tu vida.</p>
+          <p class="de">— Papá</p>
+        </div>
+      </div>
+    </button>
+  </section>
+
+  <!-- ===== 3 ===== -->
   <section class="momento revelar">
     <p class="anio">2012</p>
-    <figure class="marco">
-      <img src="fotos/02.jpg" alt="Marco con sus amigos de la escuela" onerror="this.classList.add('falta')">
-      <figcaption class="pie">Tus primeros pasos.</figcaption>
-    </figure>
-    <p class="nota">Y una vez empezaste ya no paraste.</p>
+    <button class="tarjeta" aria-label="Voltear la foto para leer el mensaje">
+      <div class="giro">
+        <div class="cara frente">
+          <img src="fotos/03.webp" alt="Marco con sus amigos" onerror="this.classList.add('falta')">
+          <p class="pie">Los de siempre</p>
+        </div>
+        <div class="cara reverso">
+          <p>Cambiaron los lugares y los horarios, pero el grupo sigue siendo el mismo.</p>
+          <p class="de">— Luis</p>
+        </div>
+      </div>
+    </button>
   </section>
 
+  <!-- ===== 4 ===== -->
+  <section class="momento revelar">
+    <p class="anio">2015</p>
+    <button class="tarjeta" aria-label="Voltear la foto para leer el mensaje">
+      <div class="giro">
+        <div class="cara frente">
+          <img src="fotos/04.webp" alt="Marco en la graduación" onerror="this.classList.add('falta')">
+          <p class="pie">La graduación</p>
+        </div>
+        <div class="cara reverso">
+          <p>Nadie dudó nunca de que ibas a llegar. Tú sí, un poco. Nosotros no.</p>
+          <p class="de">— Ana</p>
+        </div>
+      </div>
+    </button>
+  </section>
+
+  <!-- ===== 5 ===== -->
   <section class="momento revelar">
     <p class="anio">2018</p>
-    <figure class="marco">
-      <img src="fotos/03.jpg" alt="Marco en un viaje" onerror="this.classList.add('falta')">
-      <figcaption class="pie">Tú primer día</figcaption>
-    </figure>
-    <p class="nota">Estábas nervioso, y nosotros también.</p>
+    <button class="tarjeta" aria-label="Voltear la foto para leer el mensaje">
+      <div class="giro">
+        <div class="cara frente">
+          <img src="fotos/05.webp" alt="Marco de viaje" onerror="this.classList.add('falta')">
+          <p class="pie">Aquel viaje que no se planeó</p>
+        </div>
+        <div class="cara reverso">
+          <p>Nadie sabía a dónde íbamos y salió el mejor fin de semana del año.</p>
+          <p class="de">— Sofi</p>
+        </div>
+      </div>
+    </button>
   </section>
 
+  <!-- ===== 6 ===== -->
+  <section class="momento revelar">
+    <p class="anio">2020</p>
+    <button class="tarjeta" aria-label="Voltear la foto para leer el mensaje">
+      <div class="giro">
+        <div class="cara frente">
+          <img src="fotos/06.webp" alt="Marco en casa" onerror="this.classList.add('falta')">
+          <p class="pie">El año raro</p>
+        </div>
+        <div class="cara reverso">
+          <p>Nos aguantamos encerrados y todavía terminamos hablándonos. Eso dice mucho.</p>
+          <p class="de">— Los primos</p>
+        </div>
+      </div>
+    </button>
+  </section>
+
+  <!-- ===== 7 ===== -->
+  <section class="momento revelar">
+    <p class="anio">2022</p>
+    <button class="tarjeta" aria-label="Voltear la foto para leer el mensaje">
+      <div class="giro">
+        <div class="cara frente">
+          <img src="fotos/07.webp" alt="Marco en su primer trabajo" onerror="this.classList.add('falta')">
+          <p class="pie">El primer trabajo</p>
+        </div>
+        <div class="cara reverso">
+          <p>Llegabas cansado y de todos modos contabas todo lo que habías aprendido ese día.</p>
+          <p class="de">— Mamá</p>
+        </div>
+      </div>
+    </button>
+  </section>
+
+  <!-- ===== 8 ===== -->
   <section class="momento revelar">
     <p class="anio">2023</p>
-    <figure class="marco">
-      <img src="fotos/04.jpg" alt="Marco celebrando un logro" onerror="this.classList.add('falta')">
-      <figcaption class="pie">Cuando por fin lo lograste</figcaption>
-    </figure>
-    <p class="nota">Te costó más de lo que le contaste a nadie. Aquí sí lo sabemos.</p>
+    <button class="tarjeta" aria-label="Voltear la foto para leer el mensaje">
+      <div class="giro">
+        <div class="cara frente">
+          <img src="fotos/08.webp" alt="Marco celebrando un logro" onerror="this.classList.add('falta')">
+          <p class="pie">Cuando por fin lo lograste</p>
+        </div>
+        <div class="cara reverso">
+          <p>Te costó más de lo que le contaste a nadie. Aquí sí lo sabemos.</p>
+          <p class="de">— Papá</p>
+        </div>
+      </div>
+    </button>
   </section>
 
+  <!-- ===== 9 ===== -->
+  <section class="momento revelar">
+    <p class="anio">2025</p>
+    <button class="tarjeta" aria-label="Voltear la foto para leer el mensaje">
+      <div class="giro">
+        <div class="cara frente">
+          <img src="fotos/09.webp" alt="Marco con la familia" onerror="this.classList.add('falta')">
+          <p class="pie">La foto que nadie quería tomarse</p>
+        </div>
+        <div class="cara reverso">
+          <p>Terminó siendo la que más vemos. Como siempre pasa.</p>
+          <p class="de">— Ana</p>
+        </div>
+      </div>
+    </button>
+  </section>
+
+  <!-- ===== 10 ===== -->
   <section class="momento revelar">
     <p class="anio">Hoy</p>
-    <figure class="marco">
-      <img src="fotos/05.jpg" alt="Marco este año" onerror="this.classList.add('falta')">
-      <figcaption class="pie">Y así te vemos ahora</figcaption>
-    </figure>
+    <button class="tarjeta" aria-label="Voltear la foto para leer el mensaje">
+      <div class="giro">
+        <div class="cara frente">
+          <img src="fotos/10.webp" alt="Marco este año" onerror="this.classList.add('falta')">
+          <p class="pie">Y así te vemos ahora</p>
+        </div>
+        <div class="cara reverso">
+          <p>El mismo de siempre, nada más que con más historias que contar.</p>
+          <p class="de">— Todos</p>
+        </div>
+      </div>
+    </button>
   </section>
 
   <section class="cierre revelar">
@@ -306,14 +501,11 @@ main{max-width:660px;margin:0 auto;padding:16vh 1.5rem 8rem}
     vela.classList.add('soplada');
     lanzarConfeti();
 
-    // La música solo puede arrancar desde un gesto del usuario, y este lo es.
     audio.volume = 0.35;
     audio.play().then(function(){
       btnSon.classList.add('visible');
       btnSon.textContent = '♪';
-    }).catch(function(){
-      // No hay archivo de música o el navegador lo impidió: seguimos sin sonido.
-    });
+    }).catch(function(){ /* sin música: seguimos igual */ });
 
     setTimeout(function(){
       portada.classList.add('apagada');
@@ -327,12 +519,23 @@ main{max-width:660px;margin:0 auto;padding:16vh 1.5rem 8rem}
     else { audio.pause(); btnSon.textContent = '✕'; }
   });
 
+  // Voltear las tarjetas
+  document.querySelectorAll('.tarjeta').forEach(function(t){
+    t.addEventListener('click', function(){
+      var abierta = t.classList.toggle('volteada');
+      t.setAttribute('aria-label', abierta
+        ? 'Voltear de regreso para ver la foto'
+        : 'Voltear la foto para leer el mensaje');
+    });
+  });
+
+  // Revelar al hacer scroll
   if ('IntersectionObserver' in window) {
     var obs = new IntersectionObserver(function(entradas){
       entradas.forEach(function(e){
         if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.12 });
     document.querySelectorAll('.revelar').forEach(function(el){ obs.observe(el); });
   } else {
     document.querySelectorAll('.revelar').forEach(function(el){ el.classList.add('visible'); });
