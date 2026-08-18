@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Feliz cumpleaños, Marco</title>
 <meta name="description" content="Una presentación hecha para tu cumpleaños.">
+<meta name="theme-color" content="#0B0A20">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Karla:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -30,121 +31,156 @@ body{
   overflow-x:hidden;
 }
 body.bloqueado{overflow:hidden;height:100vh}
+::selection{background:var(--oro);color:var(--noche)}
 
-/* ---------- Portada: la vela ---------- */
+/* ============ PORTADA: LA VELA ============ */
 #portada{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  display:grid;
-  place-items:center;
-  background:radial-gradient(ellipse 60% 50% at 50% 42%, #2A2456 0%, var(--noche-honda) 70%);
-  text-align:center;
-  padding:2rem;
-  transition:opacity .9s ease, visibility .9s;
+  position:fixed;inset:0;z-index:200;
+  display:grid;place-items:center;
+  background:radial-gradient(ellipse 60% 50% at 50% 44%, #2A2456 0%, var(--noche-honda) 70%);
+  text-align:center;padding:2rem;
+  transition:opacity 1s ease, visibility 1s;
 }
 #portada.apagada{opacity:0;visibility:hidden;pointer-events:none}
 
-.vela{position:relative;width:44px;margin:0 auto 2.5rem;cursor:pointer;border:0;background:none;padding:1rem}
-.vela:focus-visible{outline:2px solid var(--oro);outline-offset:6px;border-radius:8px}
+.vela{position:relative;width:44px;margin:0 auto 2.8rem;cursor:pointer;border:0;background:none;padding:1rem}
+.vela:focus-visible{outline:2px solid var(--oro);outline-offset:8px;border-radius:8px}
 .cera{
-  width:22px;height:110px;margin:0 auto;
+  width:22px;height:112px;margin:0 auto;
   background:linear-gradient(100deg,var(--coral) 0%,#ff8f84 45%,#e2564a 100%);
   border-radius:4px 4px 2px 2px;
 }
+.pabilo{position:absolute;top:-8px;left:50%;width:2px;height:10px;background:#3A2E22;transform:translateX(-50%)}
 .flama{
-  position:absolute;top:-24px;left:50%;
-  width:16px;height:30px;
+  position:absolute;top:-26px;left:50%;width:16px;height:32px;
   transform:translateX(-50%);
-  background:radial-gradient(ellipse at 50% 75%, #fff6d0 0%, var(--oro) 40%, #ff8a3d 75%, transparent 100%);
+  background:radial-gradient(ellipse at 50% 78%, #fff6d0 0%, var(--oro) 40%, #ff8a3d 76%, transparent 100%);
   border-radius:50% 50% 45% 45%;
   filter:blur(.4px);
-  animation:titilar 1.6s ease-in-out infinite;
   transform-origin:50% 100%;
+  animation:titilar 1.6s ease-in-out infinite;
 }
 .halo{
-  position:absolute;top:-70px;left:50%;
-  width:180px;height:180px;
+  position:absolute;top:-76px;left:50%;width:200px;height:200px;
   transform:translateX(-50%);
-  background:radial-gradient(circle,rgba(245,184,65,.28) 0%,transparent 65%);
-  pointer-events:none;
-  animation:respirar 3.4s ease-in-out infinite;
+  background:radial-gradient(circle,rgba(245,184,65,.3) 0%,transparent 65%);
+  pointer-events:none;animation:respirar 3.4s ease-in-out infinite;
 }
 @keyframes titilar{
   0%,100%{transform:translateX(-50%) scaleY(1) rotate(-1deg)}
-  50%{transform:translateX(-50%) scaleY(1.14) rotate(2deg)}
+  50%{transform:translateX(-50%) scaleY(1.15) rotate(2deg)}
 }
 @keyframes respirar{0%,100%{opacity:.75}50%{opacity:1}}
-.vela.soplada .flama{animation:none;opacity:0;transition:opacity .25s}
-.vela.soplada .halo{opacity:0;transition:opacity .7s}
+.vela.soplada .flama{opacity:0;transition:opacity .3s}
+.vela.soplada .halo{opacity:0;transition:opacity .8s}
+.humo{
+  position:absolute;top:-30px;left:50%;width:5px;height:5px;
+  border-radius:50%;background:rgba(255,246,233,.5);
+  transform:translateX(-50%);opacity:0;
+}
+.vela.soplada .humo{animation:subir 1.6s ease-out forwards}
+@keyframes subir{
+  0%{opacity:.7;transform:translate(-50%,0) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-70px) scale(4)}
+}
 
 #portada h1{
-  font-family:var(--display);
-  font-weight:800;
+  font-family:var(--display);font-weight:800;
   font-size:clamp(2.4rem,11vw,4.2rem);
-  line-height:.95;
-  letter-spacing:-.03em;
+  line-height:.95;letter-spacing:-.03em;
 }
 #portada h1 em{font-style:normal;color:var(--oro);display:block}
 .instruccion{
-  margin-top:1.5rem;font-size:.95rem;letter-spacing:.14em;
+  margin-top:1.6rem;font-size:.9rem;letter-spacing:.16em;
   text-transform:uppercase;color:rgba(255,246,233,.55);
+  animation:latir 2.4s ease-in-out infinite;
+}
+@keyframes latir{0%,100%{opacity:.5}50%{opacity:.9}}
+
+/* ============ CONFETI ============ */
+#confeti{position:fixed;inset:0;pointer-events:none;z-index:150}
+.papelito{position:absolute;width:9px;height:14px;opacity:0;will-change:transform}
+@keyframes caer{
+  0%{opacity:1;transform:translateY(-10vh) rotate(0deg)}
+  100%{opacity:0;transform:translateY(105vh) rotate(760deg)}
 }
 
-/* ---------- Historia ---------- */
-main{max-width:640px;margin:0 auto;padding:14vh 1.5rem 8rem}
+/* ============ CONTROL DE MÚSICA ============ */
+#sonido{
+  position:fixed;top:1rem;right:1rem;z-index:120;
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(255,246,233,.25);
+  background:rgba(11,10,32,.75);backdrop-filter:blur(8px);
+  color:var(--papel);font-size:1.1rem;cursor:pointer;
+  display:none;place-items:center;
+}
+#sonido.visible{display:grid}
+#sonido:focus-visible{outline:2px solid var(--oro);outline-offset:3px}
 
-.momento{margin-bottom:14vh}
-.marco{
-  background:var(--papel);
-  padding:14px 14px 58px;
-  border-radius:3px;
-  box-shadow:0 22px 50px -18px rgba(0,0,0,.75);
-  transform:rotate(var(--giro,-1.5deg));
-  transition:transform .5s ease;
-}
-.momento:nth-child(even) .marco{--giro:1.8deg}
-.marco:hover{transform:rotate(0deg) scale(1.015)}
-.marco img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;background:#DED3C3}
-.pie{
-  font-family:var(--display);
-  color:var(--noche);
-  font-size:1.15rem;
-  text-align:center;
-  padding-top:14px;
-  line-height:1.3;
-}
-.nota{
-  margin-top:1.6rem;
-  font-size:1.12rem;
-  color:rgba(255,246,233,.9);
-  padding-left:1.1rem;
-  border-left:2px solid var(--menta);
-}
+/* ============ HISTORIA ============ */
+main{max-width:660px;margin:0 auto;padding:16vh 1.5rem 8rem}
 
-/* Placeholder cuando aún no hay foto real */
-.marco img.falta{
-  background:repeating-linear-gradient(45deg,#E8DCC9,#E8DCC9 12px,#DED3C3 12px,#DED3C3 24px);
-}
-
-/* ---------- Cierre ---------- */
-.cierre{text-align:center;padding-top:6vh}
-.cierre h2{
-  font-family:var(--display);
-  font-weight:800;
-  font-size:clamp(2rem,9vw,3.2rem);
-  line-height:1.02;
-  letter-spacing:-.02em;
-}
-.cierre h2 span{color:var(--oro)}
-.cierre p{margin-top:1.5rem;color:rgba(255,246,233,.75)}
-.firma{
-  margin-top:2.5rem;font-size:.85rem;letter-spacing:.16em;
+.intro{text-align:center;margin-bottom:18vh}
+.intro p{font-size:1.3rem;color:rgba(255,246,233,.85);line-height:1.5}
+.intro .baja{
+  margin-top:3rem;font-size:.78rem;letter-spacing:.18em;
   text-transform:uppercase;color:rgba(255,246,233,.4);
 }
 
-/* Aparición al hacer scroll */
-.revelar{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.3,1)}
+.momento{margin-bottom:15vh;position:relative}
+.anio{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(3.4rem,16vw,6rem);
+  line-height:.8;letter-spacing:-.04em;
+  color:transparent;-webkit-text-stroke:1.5px rgba(245,184,65,.45);
+  margin-bottom:-.32em;position:relative;z-index:2;
+  padding-left:.06em;
+}
+.marco{
+  background:var(--papel);padding:14px 14px 60px;border-radius:3px;
+  box-shadow:0 24px 55px -18px rgba(0,0,0,.8);
+  transform:rotate(var(--giro,-1.6deg));
+  transition:transform .5s cubic-bezier(.2,.7,.3,1);
+  position:relative;z-index:1;
+}
+.momento:nth-child(even) .marco{--giro:1.9deg}
+.marco:hover{transform:rotate(0deg) scale(1.015)}
+.marco img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;background:#DED3C3}
+.marco img.falta{background:repeating-linear-gradient(45deg,#E8DCC9,#E8DCC9 12px,#DED3C3 12px,#DED3C3 24px)}
+.pie{
+  font-family:var(--display);color:var(--noche);
+  font-size:1.18rem;text-align:center;padding-top:15px;line-height:1.3;
+}
+.nota{
+  margin-top:1.8rem;font-size:1.1rem;
+  color:rgba(255,246,233,.88);
+  padding-left:1.2rem;border-left:2px solid var(--menta);
+}
+
+/* ============ CIERRE ============ */
+.cierre{text-align:center;padding-top:8vh}
+.cierre h2{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(2rem,9vw,3.3rem);
+  line-height:1.02;letter-spacing:-.02em;
+}
+.cierre h2 span{color:var(--oro)}
+.cierre p.deseo{margin-top:1.6rem;color:rgba(255,246,233,.78);font-size:1.12rem}
+.firmas{
+  margin:3rem auto 0;max-width:420px;
+  display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;
+}
+.firmas span{
+  font-size:.92rem;padding:.4rem .9rem;border-radius:999px;
+  border:1px solid rgba(255,246,233,.2);color:rgba(255,246,233,.72);
+}
+.pie-final{
+  margin-top:3.5rem;font-size:.78rem;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(255,246,233,.35);
+}
+
+/* ============ REVELADO ============ */
+.revelar{opacity:0;transform:translateY(38px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.3,1)}
 .revelar.visible{opacity:1;transform:none}
 
 @media (prefers-reduced-motion:reduce){
@@ -156,11 +192,17 @@ main{max-width:640px;margin:0 auto;padding:14vh 1.5rem 8rem}
 </head>
 <body class="bloqueado">
 
+<div id="confeti" aria-hidden="true"></div>
+
+<button id="sonido" aria-label="Activar o silenciar la música">♪</button>
+
 <div id="portada">
   <div>
     <button class="vela" id="vela" aria-label="Soplar la vela para empezar">
       <span class="halo"></span>
+      <span class="humo"></span>
       <span class="flama"></span>
+      <span class="pabilo"></span>
       <span class="cera"></span>
     </button>
     <h1>Hoy cumples<em>años, Marco</em></h1>
@@ -170,60 +212,121 @@ main{max-width:640px;margin:0 auto;padding:14vh 1.5rem 8rem}
 
 <main id="historia">
 
+  <section class="intro revelar">
+    <p>Juntamos algunas fotos<br>y las cosas que queríamos decirte.</p>
+    <p class="baja">Desliza hacia abajo</p>
+  </section>
+
   <section class="momento revelar">
+    <p class="anio">1998</p>
     <figure class="marco">
-      <img src="fotos/01.jpg" alt="Marco de niño" onerror="this.classList.add('falta')">
+      <img src="fotos/01.webp" alt="Marco de niño" onerror="this.classList.add('falta')">
       <figcaption class="pie">Donde empezó todo</figcaption>
     </figure>
     <p class="nota">Ya desde entonces tenías esa risa que no se le puede pedir a nadie que ponga.</p>
   </section>
 
   <section class="momento revelar">
+    <p class="anio">2012</p>
     <figure class="marco">
-      <img src="fotos/02.jpg" alt="Marco con sus amigos" onerror="this.classList.add('falta')">
+      <img src="fotos/02.webp" alt="Marco con sus amigos de la escuela" onerror="this.classList.add('falta')">
       <figcaption class="pie">Los de siempre</figcaption>
     </figure>
+    <p class="nota">Cambiaron los lugares y los horarios, pero el grupo sigue siendo el mismo.</p>
   </section>
 
   <section class="momento revelar">
+    <p class="anio">2018</p>
     <figure class="marco">
-      <img src="fotos/03.jpg" alt="Marco de viaje" onerror="this.classList.add('falta')">
+      <img src="fotos/03.webp" alt="Marco en un viaje" onerror="this.classList.add('falta')">
       <figcaption class="pie">Aquel viaje que no se planeó</figcaption>
     </figure>
     <p class="nota">Nadie sabía a dónde íbamos y salió el mejor fin de semana del año.</p>
   </section>
 
   <section class="momento revelar">
+    <p class="anio">2023</p>
     <figure class="marco">
-      <img src="fotos/04.jpg" alt="Marco este año" onerror="this.classList.add('falta')">
-      <figcaption class="pie">Y así te vemos hoy</figcaption>
+      <img src="fotos/04.webp" alt="Marco celebrando un logro" onerror="this.classList.add('falta')">
+      <figcaption class="pie">Cuando por fin lo lograste</figcaption>
+    </figure>
+    <p class="nota">Te costó más de lo que le contaste a nadie. Aquí sí lo sabemos.</p>
+  </section>
+
+  <section class="momento revelar">
+    <p class="anio">Hoy</p>
+    <figure class="marco">
+      <img src="fotos/05.webp" alt="Marco este año" onerror="this.classList.add('falta')">
+      <figcaption class="pie">Y así te vemos ahora</figcaption>
     </figure>
   </section>
 
   <section class="cierre revelar">
     <h2>Gracias por <span>todo esto</span></h2>
-    <p>Que este año te traiga más de lo que te gusta y menos de lo que no.</p>
-    <p class="firma">Con cariño, de todos</p>
+    <p class="deseo">Que este año te traiga más de lo que te gusta y menos de lo que no.</p>
+    <div class="firmas">
+      <span>Mamá</span><span>Papá</span><span>Ana</span>
+      <span>Los primos</span><span>Luis</span><span>Sofi</span>
+    </div>
+    <p class="pie-final">Feliz cumpleaños</p>
   </section>
 
 </main>
 
+<audio id="audio" loop preload="none">
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 (function(){
-  var portada = document.getElementById('portada');
-  var vela = document.getElementById('vela');
+  var portada  = document.getElementById('portada');
+  var vela     = document.getElementById('vela');
+  var confeti  = document.getElementById('confeti');
+  var audio    = document.getElementById('audio');
+  var btnSon   = document.getElementById('sonido');
+  var sinMovim = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var colores = ['#F5B841','#FF6F61','#78D5C0','#FFF6E9'];
+
+  function lanzarConfeti(){
+    if (sinMovim) return;
+    for (var i = 0; i < 70; i++) {
+      var p = document.createElement('span');
+      p.className = 'papelito';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.background = colores[Math.floor(Math.random() * colores.length)];
+      p.style.animation = 'caer ' + (2.6 + Math.random() * 2.2) + 's linear ' + (Math.random() * 1.1) + 's forwards';
+      if (Math.random() > .6) p.style.borderRadius = '50%';
+      confeti.appendChild(p);
+    }
+    setTimeout(function(){ confeti.innerHTML = ''; }, 7000);
+  }
 
   function empezar(){
     vela.classList.add('soplada');
+    lanzarConfeti();
+
+    // La música solo puede arrancar desde un gesto del usuario, y este lo es.
+    audio.volume = 0.35;
+    audio.play().then(function(){
+      btnSon.classList.add('visible');
+      btnSon.textContent = '♪';
+    }).catch(function(){
+      // No hay archivo de música o el navegador lo impidió: seguimos sin sonido.
+    });
+
     setTimeout(function(){
       portada.classList.add('apagada');
       document.body.classList.remove('bloqueado');
-      document.getElementById('historia').focus({preventScroll:true});
-    }, 550);
+    }, 650);
   }
   vela.addEventListener('click', empezar);
 
-  // Revelar cada momento al entrar en pantalla
+  btnSon.addEventListener('click', function(){
+    if (audio.paused) { audio.play(); btnSon.textContent = '♪'; }
+    else { audio.pause(); btnSon.textContent = '✕'; }
+  });
+
   if ('IntersectionObserver' in window) {
     var obs = new IntersectionObserver(function(entradas){
       entradas.forEach(function(e){
